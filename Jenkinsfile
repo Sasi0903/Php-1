@@ -5,8 +5,9 @@ pipeline{
             steps{
                 scripts{
                     sshagent(['Test_Server-key']) {
-    withCredentials([usernamePassword(credentialsId: 'HubID', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-        echo "Building the docker image"
+                    echo "Building the docker image"
+            withCredentials([usernamePassword(credentialsId: 'HubID', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+            echo "Building the docker image"
          sh "scp -o StrictHostkeyChecking=no docker-script.sh ec2-user@172.31.36.19:/home/ec2-user"
          sh "ssh -o StrictHostkeyChecking=no ec2-user@172.31.36.19 'bash ~/docker-script.sh'"
          sh "ssh ec2-user@172.31.36.19 sudo docker build -t php:latest$BUILD_NUMBER /home/ec2-user/php-1" 
