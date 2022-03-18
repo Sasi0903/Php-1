@@ -4,6 +4,8 @@ pipeline{
         stage("Build Docker image"){
             steps{
                 script{
+                    sshagent(['Test_Server-key']) {
+            withCredentials([usernamePassword(credentialsId: 'HubID', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             echo "Building the docker image"
          sh "scp -o StrictHostkeyChecking=no docker-script.sh ec2-user@172.31.36.19:/home/ec2-user"
          sh "ssh -o StrictHostkeyChecking=no ec2-user@172.31.36.19 'bash ~/docker-script.sh'"
@@ -14,5 +16,7 @@ pipeline{
             }   
         }
                                     }
+    }
+}
     }
 }
