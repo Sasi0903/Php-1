@@ -11,7 +11,7 @@ pipeline{
                     sshagent(['Test_Server-key']) {
             withCredentials([usernamePassword(credentialsId: 'HubID', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             echo "Building the docker image"
-         sh "scp -o StrictHostkeyChecking=no -r docker-script.sh ${SERVER_IP}:~/docker-files"
+         sh "scp -o StrictHostkeyChecking=no -r docker-script.sh ${SERVER_IP}:~/"
          sh "ssh -o StrictHostkeyChecking=no ${SERVER_IP} 'bash ~/docker-files/docker-script.sh'"
          sh "ssh -o StrictHostkeyChecking=no ${SERVER_IP} sudo docker build -t ${IMAGE_NAME} /home/ec2-user/docker-files/dockerfile" 
          sh "ssh ${SERVER_IP} sudo docker login -u $USERNAME -p $PASSWORD"
